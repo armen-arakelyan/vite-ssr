@@ -18,7 +18,7 @@ RUN pnpm run build  # Ensure this outputs to /app/dist
 FROM nginx:alpine
 
 # Copy the build output to Nginx's HTML directory
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist/client /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
