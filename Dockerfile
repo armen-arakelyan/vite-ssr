@@ -1,17 +1,22 @@
 # Stage 1: Build the app
-FROM --platform=linux/amd64 node:18 as build
+FROM node:18-bullseye as build
 
 WORKDIR /app
 
-# Install pnpm using the recommended installation script
-RUN corepack enable && corepack prepare pnpm@8.0.0 --activate
+# Install pnpm manually via a shell script (no Rosetta, no corepack)
+RUN curl -fsSL https://get.pnpm.io/install.sh | sh - && \
+    ln -s /root/.local/share/pnpm/pnpm /usr/local/bin/pnpm
+
+# Ensure the /app directory has write permissions
+RUN chown -R node:node /app
+USER node
 
 # Copy package files and install dependencies
-COPY package.json pnpm-lock.yaml ./
+COPY --chown=node:node package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-# Copy the rest of the app's files and build the app
-COPY . .
+# Copy the rest of the code and build the app
+COPY --chown=node:node . .
 RUN pnpm run build
 
 # Stage 2: Serve the app with Nginx
