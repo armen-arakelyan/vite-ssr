@@ -1,27 +1,22 @@
-# Stage 1: Build the app
 FROM node:18-bullseye AS build
 
 WORKDIR /app
 
-# Install pnpm via npm
 RUN npm install -g pnpm@8.0.0
 
-# Copy package files and install dependencies
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
-# Copy the rest of the code and build the app
 COPY . .
-RUN pnpm run build  # Ensure this outputs to /app/dist
 
-# Stage 2: Serve the app with Nginx
-FROM nginx:alpine
+RUN pnpm run build
 
-# Copy the build output to Nginx's HTML directory
-COPY --from=build /app/dist/client /usr/share/nginx/html
+FROM node:18-bullseye
 
-# Expose port 80
-EXPOSE 80
+WORKDIR /app
 
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=build /app /app
+
+EXPOSE 3005
+
+CMD ["node", "server.js"]

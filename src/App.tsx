@@ -1,10 +1,7 @@
-// src/App.jsx
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-// @ts-ignore
 import ClientOnly from './ClientOnly.jsx';
-// @ts-ignore
 import Counter from './Counter.jsx';
 
 function App() {

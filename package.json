@@ -7,7 +7,8 @@
     "build:client": "vite build --config vite.config.client.ts",
     "build:server": "vite build --config vite.config.server.ts",     
     "build": "pnpm run build:client && pnpm run build:server",       
-    "serve": "NODE_ENV=production node server.js" 
+    "start": "NODE_ENV=production node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
     "express": "^4.21.1",
