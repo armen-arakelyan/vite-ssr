@@ -12,7 +12,7 @@ RUN pnpm install
 
 # Copy the rest of the code and build the app
 COPY . .
-RUN pnpm run build
+RUN pnpm run build  # Ensure this outputs to /app/dist
 
 # Stage 2: Serve the app with Nginx
 FROM nginx:alpine
