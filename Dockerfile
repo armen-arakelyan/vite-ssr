@@ -1,22 +1,17 @@
 # Stage 1: Build the app
-FROM node:18-bullseye as build
+FROM node:18-bullseye AS build
 
 WORKDIR /app
 
-# Install pnpm manually via a shell script (no Rosetta, no corepack)
-RUN curl -fsSL https://get.pnpm.io/install.sh | sh - && \
-    ln -s /root/.local/share/pnpm/pnpm /usr/local/bin/pnpm
-
-# Ensure the /app directory has write permissions
-RUN chown -R node:node /app
-USER node
+# Install pnpm via npm instead of using curl and a separate script
+RUN npm install -g pnpm@8.0.0
 
 # Copy package files and install dependencies
-COPY --chown=node:node package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the code and build the app
-COPY --chown=node:node . .
+COPY . .
 RUN pnpm run build
 
 # Stage 2: Serve the app with Nginx
