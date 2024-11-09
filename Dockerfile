@@ -3,12 +3,12 @@ FROM node:18-bullseye AS build
 
 WORKDIR /app
 
-# Install pnpm via npm instead of using curl and a separate script
+# Install pnpm via npm
 RUN npm install -g pnpm@8.0.0
 
 # Copy package files and install dependencies
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --force
+RUN pnpm install
 
 # Copy the rest of the code and build the app
 COPY . .
