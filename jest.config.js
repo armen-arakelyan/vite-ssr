@@ -7,4 +7,7 @@ export default {
     transform: {
       '^.+\\.(ts|tsx|js|jsx)$': 'ts-jest',
     },
+    collectCoverage: true,
+    coverageReporters: ["cobertura", "html"],
+    coverageDirectory: "./coverage"
   };
